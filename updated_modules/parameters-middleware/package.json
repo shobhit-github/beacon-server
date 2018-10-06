@@ -1,0 +1,70 @@
+{
+  "_from": "parameters-middleware",
+  "_id": "parameters-middleware@0.1.0",
+  "_inBundle": false,
+  "_integrity": "sha1-sOaf7hqgAfhBZw7Zmj7rUD52sGw=",
+  "_location": "/parameters-middleware",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "parameters-middleware",
+    "name": "parameters-middleware",
+    "escapedName": "parameters-middleware",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/parameters-middleware/-/parameters-middleware-0.1.0.tgz",
+  "_shasum": "b0e69fee1aa001f841670ed99a3eeb503e76b06c",
+  "_spec": "parameters-middleware",
+  "_where": "/Users/jasdeep.singh/Documents/Jasdeep/beacon-backend",
+  "author": {
+    "name": "Mathias Kretschek",
+    "email": "mathias@kretschek.com.br",
+    "url": "http://mathias.ms/"
+  },
+  "bugs": {
+    "url": "https://github.com/mkretschek/parameters-middleware/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "underscore": "^1.6.0"
+  },
+  "deprecated": false,
+  "description": "Express.js middleware that checks if the given parameters are set in the request.",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "codeclimate-test-reporter": "0.0.3",
+    "coveralls": "^2.11.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-mocha-test": "^0.11.0",
+    "istanbul": "^0.3.0",
+    "mocha": "^1.20.1",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.5.0"
+  },
+  "homepage": "https://github.com/mkretschek/parameters-middleware",
+  "keywords": [
+    "express",
+    "middleware",
+    "parameters",
+    "request"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "parameters-middleware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkretschek/parameters-middleware.git"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "version": "0.1.0"
+}
