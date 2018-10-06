@@ -85,10 +85,12 @@ exports.interviewUpdate = function (req, res) {
             if (err) {
                 res.jsonp({"success": true, "message": err});
             } else {
+
                 if (data) {
                     if (req.body.title && req.body.timeStamps) {
                         data.title = req.body.title;
                         data.markers = req.body.timeStamps;
+                        data.notes = req.body.notes;
                     } else {
                         data.status = req.body.status;
                         data.drive_path = req.body.drive_path;
@@ -112,8 +114,6 @@ exports.interviewUpdate = function (req, res) {
                                 }
                             });
                             console.log("here line 115");
-                            // res.jsonp({"success": true, "message":"data not saved"});
-                            // res.jsonp({"success": true, "message":"data saved"});
                         } else {
                             res.jsonp({"success": false, "message": "data not saved"});
                         }

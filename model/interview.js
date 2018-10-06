@@ -17,7 +17,7 @@ var InterviewSchema = new Schema({
 
     drive_path: {type: String, default: ""},
 
-    status: {type: Number, default: 0},
+    status: {type: Number, default: 0}, // 1 => Archive, 2 => Deleted
 
     notes: {type: String, default: null},
 
