@@ -64,7 +64,7 @@ mongoose.connect('mongodb://beacon-user:abc123@ds121871.mlab.com:21871/beacon', 
 //mongoose.connect(`mongodb://${ENV.DB_USER}:${ENV.DB_PASS}@${ENV.DB_HOST}/${ENV.DB_NAME}`, {useMongoClient: true});
 
 mongoose.Promise = global.Promise;
-process.on('unhandledRejection', up = > {
+process.on('unhandledRejection', up => {
     return up
 }
 )

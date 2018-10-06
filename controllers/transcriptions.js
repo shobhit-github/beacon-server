@@ -257,9 +257,8 @@ exports.uploadAudio = function (req, res, next) {
     InterviewObj.save(function (err, result) {
 
         if (err) {
-            fs.unlink(req.file.path, errDel = > console.log('Unable to delete the the uploaded file', errDel)
-        )
-            ;
+            fs.unlink(req.file.path, errDel => console.log('Unable to delete the the uploaded file', errDel)
+            );
             return res.status(500).json({
                 success: false,
                 message: "Recording was not upload due to an internal error",
