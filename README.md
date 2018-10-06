@@ -1,1 +1,1 @@
-# beacon-serverbeacon-server
+# beacon-server
