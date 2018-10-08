@@ -109,7 +109,7 @@ exports.interviewUpdate = function (req, res) {
                                     res.jsonp({"success": false, "message": err});
                                 } else {
                                     if (data_save1) {
-                                        res.jsonp({"success": true, "message": "data not saved"});
+                                        res.jsonp({"success": true, "message": "data not saved", data});
                                     }
                                 }
                             });
@@ -179,7 +179,7 @@ exports.fetchAllInterview = function (req, res) {
         res.jsonp({"err": "user id is required"})
     } else {
         Interview.find({user: req.params.userId}).sort({updated_at: -1}).exec(function (err, fetchdata) {
-
+            console.log(fetchdata[4].markers)
             if (fetchdata.length) {
                 res.jsonp(fetchdata);
             } else {
