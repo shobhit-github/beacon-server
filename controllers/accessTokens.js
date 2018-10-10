@@ -86,7 +86,7 @@ exports.checkToken = function (req, res, next) {
 
 exports.getUser = function (req, res, next) {
     if (req.headers.authorization) {
-        var token = req.headers.authorization
+        var token = req.headers.authorization;
         jwt.verify(token, encKey, function (err, decoded) {
             if (err) {
                 res.status(401).jsonp({success: false, "message": err.message});
@@ -101,7 +101,7 @@ exports.getUser = function (req, res, next) {
 
 exports.validateToken = function (req, res, next) {
     if (req.headers.authorization) {
-        var token = req.headers.authorization
+        var token = req.headers.authorization;
         jwt.verify(token, encKey, function (err, decoded) {
             if (err) {
                 res.status(401).jsonp({success: false, "message": err.message});
@@ -142,7 +142,7 @@ exports.validateParamToken = function (req, res, next) {
     } else {
         res.status(401).jsonp({success: false, "message": "Token is required"});
     }
-}
+};
 
 exports.expireToken = function (req, res, next) {
     if (req.headers.authorization) {
@@ -153,7 +153,7 @@ exports.expireToken = function (req, res, next) {
     } else {
         res.status(401).jsonp({success: false, "message": "Token is required"});
     }
-}
+};
 
 exports.getMessage = function (params) {
     return ({success: false, message: 'Missing params:- ' + params.join(', ')});

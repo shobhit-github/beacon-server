@@ -6,6 +6,8 @@ const async = require('async');
 const chargeBee = require('chargebee');
 const path = require('path');
 const upload = multer({dest: 'public/uploads/therapist'});
+const http = require('http');
+const fs = require('fs');
 
 const UserSubscription = require('./../model/user_subscriptions.js');
 
@@ -101,10 +103,11 @@ exports.register = function (req, res, next) {
                             })
 
                         },
-                        function (user, callback) {
+                        // these functions is temporary disabled
+                        /*function (user, callback) {
 
-                            /*    ChargeBee Integration
-                            -----------------------------------------------------*/
+                            //    ChargeBee Integration
+                            //-------------------------------------
 
                             async.waterfall([
 
@@ -161,8 +164,9 @@ exports.register = function (req, res, next) {
                                 return callback(false, user, subscriptionResult)
                             })
 
-                        },
-                        function (user, subscription, callback) {
+                        },*/
+                        // these functions is temporary disabled
+                        /*function (user, subscription, callback) {
 
                             // saving the subscription data into the subscription folder
                             if (subscription && subscription.customer) {
@@ -171,7 +175,7 @@ exports.register = function (req, res, next) {
                                     chargebee_customer_id: subscription.customer.id,
                                     chargebee_subscription_id: subscription.subscription.id,
                                     chargebee_invoice_id: subscription.invoice.id,
-                                    plan_type: req.body.plan_type == 'startup-plan-yr' ? 'yearly' : 'monthly'
+                                    plan_type: req.body.plan_type === 'startup-plan-yr' ? 'yearly' : 'monthly'
                                 });
 
                                 userSubscription.save(function (err, subscribed) {
@@ -184,19 +188,23 @@ exports.register = function (req, res, next) {
                                 return callback("Error!", false);
                             }
 
-
-                        }
+                        }*/
                     ], function (err, result) {
 
-                        console.log(err)
-
                         if (err) {
-                            User.remove({email: req.body.email}).exec(function (err, res) {
-                            });
-                            return res.status(500).jsonp({
-                                success: false,
-                                message: "There is an internal server error! Please try again with valid values.",
-                                err: err
+                            User.remove({email: req.body.email}).exec(function (err2, res) {
+                                if (err2) {
+                                    return res.status(500).jsonp({
+                                        success: false,
+                                        message: "There is an internal server error! Please try again with valid values.",
+                                        err: err2
+                                    });
+                                }
+                                return res.status(500).jsonp({
+                                    success: false,
+                                    message: "There is an internal server error! Please try again with valid values.",
+                                    err: err
+                                });
                             });
                         }
                         return res.status(200).jsonp({
@@ -371,4 +379,7 @@ exports.fetchPaymentInfo = function (req, res) {
             res.status(404).jsonp({"success": false, msg: err})
         }
     })
-}
+};
+
+
+

@@ -39,7 +39,8 @@ router.put('/:userId', token.validateToken, user.updateUser);
 
 router.post('/upload', token.validateToken, user.uploadFile);
 
-router.get('/fetchPaymentInfo/:user_id', user.fetchPaymentInfo)
+router.get('/fetchPaymentInfo/:user_id', user.fetchPaymentInfo);
+
 
 
 module.exports = router;
