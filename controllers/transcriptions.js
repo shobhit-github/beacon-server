@@ -226,19 +226,18 @@ exports.saveSynthesisDoc = function (req, res, next) {
 exports.uploadAudio = function (req, res, next) {
 
 
-    const InterviewObj = new Interview({
+    const interviewPayload = {
         markers: JSON.parse(req.body.timeStamps),
         blob_str: req.file.path,
         user: req.params.user,
         media_length: req.body.length,
         notes: req.body.notes
-    });
+    };
 
-    InterviewObj.save(function (err, result) {
+    new Interview(interviewPayload).save(function (err, result) {
 
         if (err) {
-            fs.unlink(req.file.path, errDel => console.log('Unable to delete the the uploaded file', errDel)
-            );
+            fs.unlink(req.file.path, errDel => console.log('Unable to delete the the uploaded file', errDel));
             return res.status(500).json({
                 success: false,
                 message: "Recording was not upload due to an internal error",
@@ -246,11 +245,26 @@ exports.uploadAudio = function (req, res, next) {
             });
         }
 
-        return res.status(200).json({
-            success: true,
-            message: "Recording has been successfully uploaded",
-            data: result
+        const documentData = {
+            title: result.title,
+            markers: result.markers,
+            user: result.user,
+            notes: result.notes,
+            interview: result._id,
+            type: result.type
+        };
+
+        new DocumentHistory(documentData).save((errHistory, data) => {
+            if (errHistory) {
+                return res.status(400).json({success: false, message: 'There is an internal server error'})
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'Recording has been successfully uploaded',
+                data: result
+            })
         });
+
 
     });
 };
