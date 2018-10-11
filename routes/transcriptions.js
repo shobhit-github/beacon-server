@@ -15,7 +15,7 @@ router.post('/fetchLiveRecordingData/:transcriptionsId/:userId/:type', token.val
 router.get('/startLiveRec/:patientId/:userId', token.validateParamToken, transcriptions.startLiveRec);
 router.get('/saveDuration/:transcript/:duration', transcriptions.saveDuration);
 router.get('/getTranscript/:transcript', transcriptions.getTranscript);
-router.put('/interview_update/:InterviewId', token.validateToken, transcriptions.interviewUpdate);
+router.put('/interview_update/:interview_id', token.validateToken, transcriptions.interviewUpdate);
 router.put('/interview_status/:InterviewId', token.validateToken, transcriptions.updateStatus);
 router.get('/fetchAllInterview/:userId', transcriptions.fetchAllInterview);
 router.get('/fetchDocumentHistory/:documentId', transcriptions.fetchDocumentHistory);

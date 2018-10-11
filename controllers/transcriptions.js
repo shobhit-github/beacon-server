@@ -27,7 +27,7 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 //model require
 const Transcript = require('./../model/transcript.js');
 const Interview = require('./../model/interview.js');
-const Document_history = require('./../model/document_history.js');
+const DocumentHistory = require('./../model/document_history.js');
 const Transcript_data = require('./../model/transcript_data.js');
 
 
@@ -77,71 +77,51 @@ exports.startLiveRec = function (req, res) {
 
 exports.interviewUpdate = function (req, res) {
 
-    if (!req.params.InterviewId) {
-        res.jsonp({"err": "Interview id is required"})
-    } else {
-        Interview.findOne({_id: req.params.InterviewId}).exec(function (err, data) {
-            // console.log("asdf",data);
-            if (err) {
-                res.jsonp({"success": true, "message": err});
-            } else {
 
-                if (data) {
-                    if (req.body.title && req.body.timeStamps) {
-                        data.title = req.body.title;
-                        data.markers = req.body.timeStamps;
-                        data.notes = req.body.notes;
-                    } else {
-                        data.status = req.body.status;
-                        data.drive_path = req.body.drive_path;
-                        data.type = req.body.type;
-                    }
-
-                    data.save(function (err, data_save) {
-                        if (data_save) {
-                            var doc_his = new Document_history({
-                                document_id: req.params.InterviewId,
-                                user_id: data.user
-                            });
-                            doc_his.save(function (err1, data_save1) {
-                                if (err1) {
-                                    console.log("err1", err1);
-                                    res.jsonp({"success": false, "message": err});
-                                } else {
-                                    if (data_save1) {
-                                        res.jsonp({"success": true, "message": "data not saved", data});
-                                    }
-                                }
-                            });
-                            console.log("here line 115");
-                        } else {
-                            res.jsonp({"success": false, "message": "data not saved"});
-                        }
-                    });
-                } else {
-                    res.jsonp({"success": false, "message": "user not found!"})
-                }
-            }
-        })
+    if (!req.params.interview_id) {
+        return res.status(400).json({status: false, err: `Interview id doesn't exist in the parameters`})
     }
+    Interview.findByIdAndUpdate(req.params.interview_id, {
+        $set: {
+            markers: req.body.timeStamps,
+            title: req.body.title,
+            notes: req.body.notes
+        }
+    }, {new: true})
+        .exec((err, result) => {
+            if (err) {
+                return res.status(400).json({success: false, message: 'There is an internal server error'})
+            }
+
+            const documentData = {
+                title: result.title,
+                markers: result.markers,
+                user: result.user,
+                notes: result.notes,
+                interview: result._id,
+                type: result.type
+            };
+
+            new DocumentHistory(documentData).save((errHistory, data) => {
+                if (errHistory) {
+                    return res.status(400).json({success: false, message: 'There is an internal server error'})
+                }
+                return res.status(200).json({success: true, message: 'Document has been updated successfully!', data})
+            })
+        });
 }
 
 exports.fetchDocumentHistory = function (req, res) {
-    Document_history.find({document_id: req.params.documentId}, {
-        document_id: 1,
-        user_id: 1,
-        created: 1
-    }).sort({created: -1}).exec(function (err, data) {
+    DocumentHistory.find({interview: req.params.documentId}).sort({created_at: -1}).exec(function (err, data) {
         if (err) {
-            res.jsonp({"success": false, "message": "Document not found!"})
+            return res.jsonp({"success": false, "message": "Document not found!"})
         } else {
             if (data.length) {
-                // res.status(200).jsonp({data:data});
-                res.status(200).jsonp({"success": true, "data": data});
+                return res.status(200).jsonp({"success": true, "data": data});
             }
         }
     })
-}
+};
 
 exports.updateStatus = function (req, res) {
 
@@ -179,7 +159,7 @@ exports.fetchAllInterview = function (req, res) {
         res.jsonp({"err": "user id is required"})
     } else {
         Interview.find({user: req.params.userId}).sort({updated_at: -1}).exec(function (err, fetchdata) {
-            console.log(fetchdata[4].markers)
+
             if (fetchdata.length) {
                 res.jsonp(fetchdata);
             } else {
